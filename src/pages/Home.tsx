@@ -1,7 +1,8 @@
 import { useBooks } from '../context/BookContext';
 import Card from '../components/Card';
 import { Book } from '../types';
-import Table from '../components/Table';
+// import Table from '../components/Table';
+import Tableb from '../components/Tableb';
 
 const Home = () => {
   const context = useBooks();
@@ -24,12 +25,13 @@ const Home = () => {
   return (
     <div className=" w-full flex flex-col items-center">
       <h1 className=" text-5xl font-bold underline">Libros desde Home</h1>
-      <div>
+      {/* <div>
         {books.map((book: Book) => (
           <Card key={book?.name} book={book} />
         ))}
-      </div>
-      <Table />
+      </div> */}
+      {/* <Table /> */} {/*Tabla con los personajes */}
+      <Tableb books={books} />
     </div>
   );
 };

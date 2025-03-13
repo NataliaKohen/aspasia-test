@@ -4,81 +4,60 @@ import {
   flexRender,
   ColumnDef,
 } from '@tanstack/react-table';
-// export interface Book {
-//     name: string;
-//     authors: string[];
-//     numberOfPages: number;
-//     publisher: string;
-//     country: string;
-//     released: string;
-//     characters: string[];
-//     povCharacters: string[];
-//   }
-interface User {
-  id: number;
-  name: string;
-  lastname: string;
-  email: string;
-  country: string;
-  dayofbirth: string;
-}
-const data: User[] = [
+import { Book } from '../types';
+import { useBooks } from '../context/BookContext';
+
+// Columnas de la tabla
+const columns: ColumnDef<Book>[] = [
   {
-    id: 1,
-    name: 'John',
-    lastname: 'Doe',
-    email: 'john.doe@example.com',
-    country: 'USA',
-    dayofbirth: '1990-01-01',
+    header: 'Nombre',
+    accessorKey: 'name',
   },
   {
-    id: 2,
-    name: 'Jane',
-    lastname: 'Smith',
-    email: 'jane.smith@example.com',
-    country: 'UK',
-    dayofbirth: '1985-02-20',
+    header: 'Autor',
+    accessorKey: 'authors',
+    cell: ({ row }) => row.original.authors.join(', '), // Convertir array a string
+  },
+  {
+    header: 'Número de páginas',
+    accessorKey: 'numberOfPages',
+  },
+  {
+    header: 'Editora',
+    accessorKey: 'publisher',
+  },
+  {
+    header: 'País',
+    accessorKey: 'country',
+  },
+  {
+    header: 'Fecha de publicación',
+    accessorKey: 'released',
+  },
+  {
+    header: 'Personajes',
+    accessorKey: 'characters',
+    cell: ({ row }) => row.original.characters.length, // Mostrar cantidad de personajes
+  },
+  {
+    header: 'Pov Characters',
+    accessorKey: 'povCharacters',
+    cell: ({ row }) => row.original.povCharacters.join(', '), // Convertir array a string
   },
 ];
 
-const columns: ColumnDef<User>[] = [
-  {
-    header: 'ID',
-    accessorKey: 'id',
-    footer: 'miId',
-  },
-  {
-    header: 'Name',
-    accessorKey: 'name',
-    footer: 'mi nombre',
-  },
-  {
-    header: 'Lastname',
-    accessorKey: 'lastname',
-    footer: 'mi apellido',
-  },
-  {
-    header: 'Email',
-    accessorKey: 'email',
-    footer: 'mi mail',
-  },
-  {
-    header: 'Country',
-    accessorKey: 'country',
-    footer: 'mi pais',
-  },
-  {
-    header: 'Day of birth',
-    accessorKey: 'dayofbirth',
-    footer: 'mi fecha de nac',
-  },
-];
-const Table = () => {
+const Tableb = () => {
+  const bookContext = useBooks();
+  const books = bookContext?.books ?? [];
+
+  console.log(books);
+
   const tabla = useReactTable({
-    data,
+    data: books,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+  if (!bookContext) return <p>Loading...</p>;
   return (
     <div>
       <table>
@@ -100,30 +79,16 @@ const Table = () => {
           {tabla.getRowModel().rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td>
+                <td key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
-        <tfoot>
-          {tabla.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((footer) => (
-                <th key={footer.id}>
-                  {flexRender(
-                    footer.column.columnDef.footer,
-                    footer.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
     </div>
   );
 };
 
-export default Table;
+export default Tableb;

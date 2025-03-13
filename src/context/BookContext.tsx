@@ -18,9 +18,25 @@ const BookContext = createContext<BookContextType | undefined>(undefined);
 export const BookProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Book[]>([]);
 
+  const getCharacterName = async (url: string): Promise<string> => {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.name;
+  };
+
   const getBooks = async () => {
     const response: Book[] = await getData();
-    setBooks(response);
+
+    const booksWithCharacters = await Promise.all(
+      response.map(async (book) => ({
+        ...book,
+        povCharacters: await Promise.all(
+          book.povCharacters.map(getCharacterName)
+        ),
+      }))
+    );
+
+    setBooks(booksWithCharacters);
   };
 
   useEffect(() => {

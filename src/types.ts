@@ -8,3 +8,15 @@ export interface Book {
   characters: string[];
   povCharacters: string[];
 }
+
+export interface FormValues {
+  nombre: string;
+  autor: string;
+  edicion: string;
+  pais: string;
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}

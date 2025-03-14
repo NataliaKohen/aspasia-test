@@ -1,37 +1,38 @@
+import { useState } from 'react';
+import BookTable from '../components/BookTable';
+import Modal from '../components/Modal';
 import { useBooks } from '../context/BookContext';
-import Card from '../components/Card';
-import { Book } from '../types';
-// import Table from '../components/Table';
-import Tableb from '../components/Tableb';
 
 const Home = () => {
   const context = useBooks();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!context) {
     return <div>Loading...</div>;
   }
 
   const { books } = context;
-  // const [books, setBooks] = useState<Book[]>([]);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-  // useEffect(() => {
-  //   const getBooks = async () => {
-  //     const response: Book[] = await getData();
-  //     setBooks(response);
-  //   };
-  //   getBooks();
-  // }, []);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className=" w-full flex flex-col items-center">
-      <h1 className=" text-5xl font-bold underline">Libros desde Home</h1>
-      {/* <div>
-        {books.map((book: Book) => (
-          <Card key={book?.name} book={book} />
-        ))}
-      </div> */}
-      {/* <Table /> */} {/*Tabla con los personajes */}
-      <Tableb books={books} />
+    <div className=" w-full flex flex-col items-center h-full ">
+      <h1 className="mt-20 text-5xl font-bold underline">Libros desde Home</h1>
+
+      <BookTable books={books} />
+      <button
+        className="bg-blue-400 rounded-sm p-3 text text-white font-bold m-6 "
+        onClick={handleOpenModal}
+      >
+        Agregar un libro{' '}
+      </button>
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal} />
     </div>
   );
 };

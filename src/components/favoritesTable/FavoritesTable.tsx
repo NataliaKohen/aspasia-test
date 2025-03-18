@@ -91,14 +91,14 @@ export const FavoritesTable: React.FC<FavoritesTableProps> = ({
             const bookId = extractBookIdFromUrl(row.original.url);
 
             return (
-              <tr className="hover:bg-blue-50 cursor-pointer">
+              <tr key={row.id} className="hover:bg-blue-50 cursor-pointer">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
                     className="px-4 py-2 text-sm text-blue-800 border-b"
                   >
                     {' '}
-                    <Link key={row.id} to={`/books/${bookId}`}>
+                    <Link to={`/books/${bookId}`}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()

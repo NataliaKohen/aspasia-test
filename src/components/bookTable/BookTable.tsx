@@ -112,18 +112,18 @@ export const BookTable: React.FC<BookTableProps> = ({ books }) => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((book) => {
-            const bookId = extractBookIdFromUrl(book.original.url);
+          {table.getRowModel().rows.map((row) => {
+            const bookId = extractBookIdFromUrl(row.original.url);
 
             return (
               <tr
-                key={book.original.url}
+                key={row.id}
                 className="hover:bg-blue-50 cursor-pointer"
                 onClick={() => {
                   navigate(`/books/${bookId}`);
                 }}
               >
-                {book.getVisibleCells().map((cell) => (
+                {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
                     className="px-4 py-2 text-sm text-blue-800 border-b"

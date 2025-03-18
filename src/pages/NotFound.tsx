@@ -1,8 +1,8 @@
 const NotFound = () => {
   return (
-    <div>
-      <h1 className="text-5xl font-bold ">
-        Ops hubo un problema, vuelve a cargar la página.
+    <div className="mt-40 flex justify-center ">
+      <h1 className="m-3 text-3xl font-bold ">
+        Ups, algo salió mal. Intenta recargar la página
       </h1>
     </div>
   );

@@ -6,9 +6,14 @@ import {
   getSortedRowModel,
   getFilteredRowModel,
 } from '@tanstack/react-table';
-import { Book } from '../types';
-import { useBooks } from '../context/BookContext';
+
 import { useState } from 'react';
+import { Book } from '../../types';
+import { useNavigate } from 'react-router-dom';
+
+interface BookTableProps {
+  books: Book[];
+}
 
 const columns: ColumnDef<Book>[] = [
   {
@@ -37,7 +42,7 @@ const columns: ColumnDef<Book>[] = [
     accessorKey: 'released',
     enableSorting: true,
     cell: ({ row }) => {
-      const releaseDate = new Date(row.original.released);
+      const releaseDate = new Date(row.original.released || '');
       return releaseDate.toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'long',
@@ -47,10 +52,9 @@ const columns: ColumnDef<Book>[] = [
   },
 ];
 
-const BookTable = () => {
-  const bookContext = useBooks();
-  const books = bookContext?.books ?? [];
+export const BookTable: React.FC<BookTableProps> = ({ books }) => {
   const [globalFilter, setGlobalFilter] = useState('');
+  const navigate = useNavigate();
 
   const table = useReactTable({
     data: books,
@@ -63,7 +67,12 @@ const BookTable = () => {
     },
     onGlobalFilterChange: setGlobalFilter,
   });
-  if (!bookContext) return <p>Loading...</p>;
+
+  const extractBookIdFromUrl = (url: string) => {
+    const parts = url.split('/');
+    return parts[parts.length - 1];
+  };
+
   return (
     <div className="mt-20 ">
       <input
@@ -71,7 +80,7 @@ const BookTable = () => {
         placeholder="Buscar..."
         value={globalFilter}
         onChange={(e) => setGlobalFilter(e.target.value)}
-        className="border p-2 mb-4 w-full rounded"
+        className="border border-blue-400 p-2 mb-4 w-full rounded"
       />
       <table className="min-w-full table-auto  border border-blue-300">
         <thead>
@@ -103,22 +112,30 @@ const BookTable = () => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-blue-50 cursor-pointer">
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="px-4 py-2 text-sm text-blue-800 border-b"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
+          {table.getRowModel().rows.map((book) => {
+            const bookId = extractBookIdFromUrl(book.original.url);
+
+            return (
+              <tr
+                key={book.original.url}
+                className="hover:bg-blue-50 cursor-pointer"
+                onClick={() => {
+                  navigate(`/books/${bookId}`);
+                }}
+              >
+                {book.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="px-4 py-2 text-sm text-blue-800 border-b"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
 };
-
-export default BookTable;

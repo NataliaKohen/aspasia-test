@@ -1,19 +1,18 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { Book } from '../types';
 import { getData } from '../api/axios';
 
 interface BookContextType {
   books: Book[];
   getBooks: () => void;
+  setBooks: (v: Book[]) => void;
 }
 
-const BookContext = createContext<BookContextType | undefined>(undefined);
+const BookContext = createContext<BookContextType>({
+  books: [],
+  getBooks: () => {},
+  setBooks: () => {},
+});
 
 export const BookProvider = ({ children }: { children: ReactNode }) => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -23,18 +22,14 @@ export const BookProvider = ({ children }: { children: ReactNode }) => {
     setBooks(response);
   };
 
-  useEffect(() => {
-    getBooks();
-  }, []);
-
   return (
-    <BookContext.Provider value={{ books, getBooks }}>
+    <BookContext.Provider value={{ books, getBooks, setBooks }}>
       {children}
     </BookContext.Provider>
   );
 };
 
-export const useBooks = (): BookContextType | undefined => {
+export const useBooks = (): BookContextType => {
   const context = useContext(BookContext);
   return context;
 };

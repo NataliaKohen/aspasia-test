@@ -1,45 +1,76 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { FavoritesTable } from './FavoritesTable';
-// import { FavoritesBooks } from '../../types';
+import { FavoritesBooks } from '../../types';
+import { useFavoritesStore } from '../../store/favoritesStores';
 
 jest.mock('react-router-dom', () => ({
-  useNavigate: jest.fn(),
+  Link: ({ children }: { children: React.ReactNode }) => (
+    <span>{children}</span>
+  ),
 }));
 
-// const mockFavorites: FavoritesBooks[] = [
-//   {
-//     url: 'https://anapioficeandfire.com/api/books/1',
-//     name: 'A Game of Thrones',
-//     authors: ['George R. R. Martin'],
-//     publisher: 'Bantam Books',
-//     country: 'United States',
-//     released: '1996-08-06T00:00:00',
-//   },
-//   {
-//     url: 'https://anapioficeandfire.com/api/books/2',
-//     name: 'A Clash of Kings',
-//     authors: ['George R. R. Martin'],
-//     publisher: 'Bantam Books',
-//     country: 'United States',
-//     released: '1998-11-16T00:00:00',
-//   },
-// ];
+const mockFavorites: FavoritesBooks[] = [
+  {
+    name: 'El coronel no tiene quien le escriba',
+    authors: ['Gabriel García Márquez'],
+    publisher: 'Sudamericana',
+    country: 'Colombia',
+    released: '1961-01-01T10:00:00Z',
+    url: 'https://example.com/book2',
+  },
+  {
+    name: 'El regreso de los tigres de Mompracem',
+    authors: ['Bárbara Wood'],
+    released: '1997-09-01T10:00:00Z',
+    country: 'Estados Unidos',
+    publisher: 'Planeta',
+    url: 'https://example.com/book3',
+  },
+];
 
-describe('FavoritesTable component', () => {
-  //   test('renderiza la tabla con libros favoritos', () => {
-  //     console.log(FavoritesTable);
-  //     render(<FavoritesTable favorites={mockFavorites} />);
-
-  //     expect(screen.getByText('A Game of Thrones')).toBeInTheDocument();
-  //     expect(screen.getByText('A Clash of Kings')).toBeInTheDocument();
-  //     expect(screen.getByText('George R. R. Martin')).toBeInTheDocument();
-  //     expect(screen.getByText('Bantam Books')).toBeInTheDocument();
-  //     expect(screen.getByText('Estados Unidos')).toBeInTheDocument();
-  //   });
-  test('muestra mensaje si no hay favoritos', () => {
-    render(<FavoritesTable favorites={[]} />);
-    expect(
-      screen.getByText('Aún no tienes libros favoritos')
-    ).toBeInTheDocument();
+test('debe renderizar la tabla con los libros favoritos', () => {
+  useFavoritesStore.setState({
+    favorites: mockFavorites,
   });
+
+  render(<FavoritesTable favorites={mockFavorites} />);
+
+  expect(
+    screen.getByText('El coronel no tiene quien le escriba')
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText('El regreso de los tigres de Mompracem')
+  ).toBeInTheDocument();
+  expect(screen.getByText('Gabriel García Márquez')).toBeInTheDocument();
+  expect(screen.getByText('Bárbara Wood')).toBeInTheDocument();
+  expect(screen.getByText('Sudamericana')).toBeInTheDocument();
+  expect(screen.getByText('Planeta')).toBeInTheDocument();
+  expect(screen.getByText('Colombia')).toBeInTheDocument();
+  expect(screen.getByText('Estados Unidos')).toBeInTheDocument();
+});
+
+test('debe mostrar el mensaje cuando no hay libros favoritos', () => {
+  useFavoritesStore.setState({
+    favorites: [],
+  });
+
+  render(<FavoritesTable favorites={[]} />);
+
+  expect(
+    screen.getByText('Aún no tienes libros favoritos')
+  ).toBeInTheDocument();
+});
+
+test('debe ordenar los libros por nombre cuando se hace clic en el encabezado', () => {
+  render(<FavoritesTable favorites={mockFavorites} />);
+
+  const nameHeader = screen.getByText('Nombre');
+  fireEvent.click(nameHeader);
+
+  expect(
+    screen.getByText('El coronel no tiene quien le escriba')
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText('El regreso de los tigres de Mompracem')
+  ).toBeInTheDocument();
 });

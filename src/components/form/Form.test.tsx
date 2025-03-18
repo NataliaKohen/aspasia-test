@@ -1,44 +1,37 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Form } from './Form';
-import { useBooks } from '../../context/BookContext';
 
-jest.mock('../../context/BookContext', () => ({
-  useBooks: jest.fn(),
+jest.mock('../../store/bookStore', () => ({
+  useBookStore: () => ({
+    books: [],
+    setBooks: jest.fn(),
+  }),
 }));
 
 describe('Form component', () => {
-  const setBooksMock = jest.fn();
-  const mockUseBooks = useBooks as jest.Mock;
-
-  beforeEach(() => {
-    mockUseBooks.mockReturnValue({
-      books: [],
-      setBooks: setBooksMock,
-    });
-  });
-
-  test('deberia mostrar errores de validación cuando los campos estan vacíos', async () => {
+  test('debería mostrar errores de validación cuando los campos pierden el foco ', async () => {
     render(<Form />);
-    const nameInput = screen.getByLabelText(/nombre/i);
-    const authorInput = screen.getByLabelText(/autor/i);
-    const publisherInput = screen.getByLabelText(/edición/i);
-    const countryInput = screen.getByLabelText(/país/i);
-    const genderInput = screen.getByLabelText(/género/i);
 
-    fireEvent.blur(nameInput);
-    fireEvent.blur(authorInput);
-    fireEvent.blur(publisherInput);
-    fireEvent.blur(countryInput);
-    fireEvent.blur(genderInput);
+    fireEvent.blur(screen.getByLabelText(/Nombre/i));
+    fireEvent.blur(screen.getByLabelText(/Autor/i));
+    fireEvent.blur(screen.getByLabelText(/Edición/i));
+    fireEvent.blur(screen.getByLabelText(/Género/i));
+    fireEvent.blur(screen.getByLabelText(/País/i));
 
-    await waitFor(() => {
-      expect(screen.getByText(/el nombre es obligatorio/i)).toBeInTheDocument();
-      expect(screen.getByText(/el autor es obligatorio/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/la edición es obligatoria/i)
-      ).toBeInTheDocument();
-      expect(screen.getByText(/el país es obligatorio/i)).toBeInTheDocument();
-      expect(screen.getByText(/el género es obligatorio/i)).toBeInTheDocument();
-    });
+    expect(
+      await screen.findByText('El nombre es obligatorio')
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText('El autor es obligatorio')
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText('La edición es obligatoria')
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText('El género es obligatorio')
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText('El país es obligatorio')
+    ).toBeInTheDocument();
   });
 });

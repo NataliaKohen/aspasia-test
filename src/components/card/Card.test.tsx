@@ -1,47 +1,46 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { useFavorites } from '../../context/FavoritesContext';
 import { jest } from '@jest/globals';
 import { Book } from '../../types';
 import { Card } from './Card';
-
-jest.mock('../../context/FavoritesContext.tsx', () => ({
-  useFavorites: jest.fn(),
-}));
+import { useFavoritesStore } from '../../store/favoritesStores';
 
 describe('Card component', () => {
   const mockBook: Book = {
-    name: 'Game of Thrones',
-    authors: ['George R.R. Martin'],
-    released: '1996-08-01T10:00:00Z',
-    country: 'USA',
-    numberOfPages: 694,
-    publisher: 'Bantam Books',
-    url: 'https://example.com/book1',
+    name: 'El coronel no tiene quien le escriba',
+    authors: ['Gabriel García Márquez'],
+    released: '1961-01-01T10:00:00Z',
+    country: 'Colombia',
+    numberOfPages: 140,
+    publisher: 'Editorial Sudamericana',
+    url: 'https://example.com/book2',
   };
 
   test('debe renderizar la información del libro', () => {
-    (useFavorites as jest.Mock).mockReturnValue({
+    useFavoritesStore.setState({
       favorites: [],
-      toggleFavorite: jest.fn(),
     });
 
     render(<Card book={mockBook} />);
 
-    expect(screen.getByText('Game of Thrones')).toBeInTheDocument();
-    expect(screen.getByText('George R.R. Martin')).toBeInTheDocument();
     expect(
-      screen.getByText('Fecha de publicación: 1 de agosto de 1996')
+      screen.getByText('El coronel no tiene quien le escriba')
     ).toBeInTheDocument();
-    expect(screen.getByText('País: USA')).toBeInTheDocument();
-    expect(screen.getByText('Páginas: 694')).toBeInTheDocument();
-    expect(screen.getByText('Editorial: Bantam Books')).toBeInTheDocument();
+    expect(screen.getByText('Gabriel García Márquez')).toBeInTheDocument();
+    expect(
+      screen.getByText('Fecha de publicación: 1 de enero de 1961')
+    ).toBeInTheDocument();
+    expect(screen.getByText('País: Colombia')).toBeInTheDocument();
+    expect(screen.getByText('Páginas: 140')).toBeInTheDocument();
+    expect(
+      screen.getByText('Editorial: Editorial Sudamericana')
+    ).toBeInTheDocument();
   });
 
   test('debe llamar a toggleFavorite al hacer clic en el botón de favoritos', () => {
     const toggleFavoriteMock = jest.fn();
-    (useFavorites as jest.Mock).mockReturnValue({
-      favorites: [],
+    useFavoritesStore.setState({
       toggleFavorite: toggleFavoriteMock,
+      favorites: [],
     });
 
     render(<Card book={mockBook} />);
@@ -53,9 +52,8 @@ describe('Card component', () => {
   });
 
   test('debe mostrar el icono correcto si el libro está en favoritos', () => {
-    (useFavorites as jest.Mock).mockReturnValue({
+    useFavoritesStore.setState({
       favorites: [mockBook],
-      toggleFavorite: jest.fn(),
     });
 
     render(<Card book={mockBook} />);

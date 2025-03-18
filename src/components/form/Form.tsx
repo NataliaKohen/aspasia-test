@@ -1,17 +1,24 @@
-import { Formik, Form as FormikForm, Field } from 'formik';
 import { useState } from 'react';
-import { useBooks } from '../../context/BookContext';
-import { Book, FormValues } from '../../types';
-import { Button } from '../button/Button';
-
 import DatePicker from 'react-datepicker';
+import { Formik, Form as FormikForm, Field } from 'formik';
+import { Button } from '../button/Button';
 import 'react-datepicker/dist/react-datepicker.css';
 import { SuccessMessage } from '../successMessage';
+import { useBookStore } from '../../store/bookStore';
+import { Book, FormValues } from '../../types';
 
 export const Form = () => {
   const [newBook, setNewBook] = useState<FormValues[]>([]);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
-  const { books, setBooks } = useBooks();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { books, setBooks } = useBookStore();
+
+  const capitalizeFirstLetter = (str: string) => {
+    return str
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
 
   return (
     <div className="flex flex-col ">
@@ -37,22 +44,36 @@ export const Form = () => {
           if (!values.publisher) errors.publisher = 'La edición es obligatoria';
           if (!values.country) errors.country = 'El país es obligatorio';
           if (!values.gender) errors.gender = 'El género es obligatorio';
+          if (!values.released)
+            errors.released = 'La fecha de publicación es obligatoria';
           return errors;
         }}
         onSubmit={(values, { resetForm }) => {
-          setNewBook((prevBooks) => [...prevBooks, values]);
+          setIsLoading(true);
+          const formattedValues = {
+            ...values,
+            name: capitalizeFirstLetter(values.name),
+            authors: values.authors.map((author) =>
+              capitalizeFirstLetter(author)
+            ),
+            publisher: capitalizeFirstLetter(values.publisher),
+            country: capitalizeFirstLetter(values.country),
+            gender: capitalizeFirstLetter(values.gender),
+          };
+          setNewBook((prevBooks) => [...prevBooks, formattedValues]);
 
           const newBookToStore: Book = {
-            ...values,
+            ...formattedValues,
             url: 'https://anapioficeandfire.com/api/books/1',
-            authors: values.authors as string[],
+            authors: formattedValues.authors as string[],
           };
           setBooks([...books, newBookToStore]);
           setIsSubmitted(true);
           resetForm();
+          setIsLoading(false);
         }}
       >
-        {({ errors, touched, isSubmitting, setFieldValue, values }) => (
+        {({ errors, touched, setFieldValue, values }) => (
           <FormikForm className="flex flex-col items-end p-6 border rounded-lg border-blue-300 bg-white shadow-md">
             <div className=" flex m-4 ">
               <div className="mx-4">
@@ -154,6 +175,7 @@ export const Form = () => {
                 <label
                   className="block text-sm font-semibold text-blue-900 "
                   id="publication-date-label"
+                  htmlFor="publication-date"
                 >
                   Fecha de publicación:
                 </label>
@@ -161,6 +183,7 @@ export const Form = () => {
                   selected={values.released ? new Date(values.released) : null}
                   onChange={(date) => setFieldValue('released', date)}
                   placeholderText="Selecciona una fecha"
+                  id="publication-date"
                   aria-labelledby="publication-date-label"
                   className="p-2 mt-1 border rounded-md text-blue-400 w-full focus:border-blue-400 focus:ring focus:ring-blue-300 focus:outline-none placeholder:text-blue-400 cursor-pointer"
                 />
@@ -171,9 +194,9 @@ export const Form = () => {
             </div>
             <Button
               type="submit"
-              className="bg-cyan-500 text-white px-6 mt-4 rounded-md hover:bg-cyan-600 transition "
+              className=" px-6 mt-4 rounded-md  transition "
             >
-              {isSubmitting ? 'Guardando...' : 'Guardar'}
+              {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>
           </FormikForm>
         )}

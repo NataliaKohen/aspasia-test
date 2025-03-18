@@ -1,11 +1,12 @@
-import { Book } from '../../types';
-import { useFavorites } from '../../context/FavoritesContext';
-
+import { Book, FavoritesBooks } from '../../types';
 import { IoHeart, IoHeartOutline } from 'react-icons/io5';
 import { Button } from '../button/Button';
+import { useFavoritesStore } from '../../store/favoritesStores';
+import { FiLoader } from 'react-icons/fi';
 
 export const Card = ({ book }: { book: Book }) => {
-  const { favorites, toggleFavorite } = useFavorites();
+  const { favorites, toggleFavorite, isLoading } = useFavoritesStore();
+
   const formatDate = (date: Date) => {
     return date.toLocaleDateString('es-ES', {
       day: 'numeric',
@@ -14,12 +15,32 @@ export const Card = ({ book }: { book: Book }) => {
     });
   };
 
-  const isFavorite = favorites.some((fav) => fav.url === book.url);
+  const isFavorite = favorites.some(
+    (fav: FavoritesBooks) => fav.url === book.url
+  );
 
   const synopsis =
     'Una aventura épica sobre la lucha entre el bien y el mal, donde héroes y villanos se enfrentan en un mundo mágico.';
   const userRating = (Math.random() * 4 + 1).toFixed(1);
+  let icon;
 
+  if (isLoading) {
+    icon = (
+      <FiLoader className="animate-spin" size={24} color="rgb(255, 100, 103)" />
+    );
+  } else if (isFavorite) {
+    icon = (
+      <IoHeart data-testid="heart-icon" color="rgb(255, 100, 103)" size={30} />
+    );
+  } else {
+    icon = (
+      <IoHeartOutline
+        data-testid="heart-outline-icon"
+        color="rgb(255, 100, 103)"
+        size={30}
+      />
+    );
+  }
   return (
     <div
       className="flex flex-col items-center
@@ -46,20 +67,11 @@ export const Card = ({ book }: { book: Book }) => {
         </h5>
       </div>
 
-      <Button className="ml-auto mt-4" onClick={() => toggleFavorite(book)}>
-        {isFavorite ? (
-          <IoHeart
-            data-testid="heart-icon"
-            color="rgb(255, 100, 103)"
-            size={30}
-          />
-        ) : (
-          <IoHeartOutline
-            data-testid="heart-outline-icon"
-            color="rgb(255, 100, 103)"
-            size={30}
-          />
-        )}
+      <Button
+        className=" bg-blue-300 ml-auto mt-4 "
+        onClick={() => toggleFavorite(book)}
+      >
+        <>{icon}</>
       </Button>
     </div>
   );

@@ -27,13 +27,13 @@ export interface ModalProps {
   onClose: () => void;
 }
 
-export type FavoritesContextType = {
-  favorites: Book[];
-  addFavorite: (book: Book) => void;
-  removeFavorite: (id: string) => void;
-  toggleFavorite: (book: Book) => void;
-};
-
+export interface FavoritesState {
+  isLoading: boolean;
+  favorites: FavoritesBooks[];
+  addFavorite: (book: FavoritesBooks) => void;
+  removeFavorite: (url: string) => void;
+  toggleFavorite: (book: FavoritesBooks) => void;
+}
 export type ButtonProps = {
   children: ReactNode;
   onClick?: () => void;
@@ -50,4 +50,15 @@ export interface FavoritesBooks {
   publisher: string;
   country: string;
   released?: string | null;
+}
+
+export interface BookStore {
+  isLoading: boolean;
+  error: string | null;
+  books: Book[];
+  getBooks: () => void;
+  setBooks: (v: Book[]) => void;
+}
+export interface BookTableProps {
+  books: Book[];
 }

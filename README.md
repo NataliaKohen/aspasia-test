@@ -1,6 +1,6 @@
 # Prueba Técnica - Aspasia
 
-# Aplicación de Lectura de Libros
+## Aplicación de Lectura de Libros
 
 Esta es una aplicación web que permite a los usuarios buscar, filtrar y explorar una lista de libros.
 Utiliza la API pública "An API of Ice and Fire" para obtener los datos de los libros, y permite a los usuarios interactuar con una lista de libros, ordenarlos, buscarlos, y filtrarlos. Además, los usuarios pueden agregar libros a su lista de favoritos y ver detalles adicionales sobre cada uno.
@@ -68,7 +68,7 @@ Para ejecutar Storybook y ver los componentes aislados, puedes usar el siguiente
 Esto abrirá Storybook en tu navegador en [http://localhost:6006](http://localhost:6006).
 Aquí podrás ver los componentes desarrollados, interactuar con ellos, y probar su comportamiento en diferentes estados.
 
-# Opciones técnicas y arquitectónicas
+## Opciones técnicas y arquitectónicas
 
 - Estado global con Zustand
   A pesar de que en las instrucciones se indicaba el uso de React Context o Redux para el manejo del estado, decidí utilizar Zustand porque en proyectos anteriores lo he usado y me ha parecido más legible y sencillo. No requiere un Provider ni un contexto adicional, lo que facilita su integración. Esto hace que la aplicación sea más fácil de mantener y escalar, especialmente cuando se manejan estados simples y el rendimiento es una prioridad.
@@ -91,13 +91,13 @@ Aquí podrás ver los componentes desarrollados, interactuar con ellos, y probar
 - Formularios con Formik
   Utilicé Formik para el manejo y validación de formularios, ya que facilita la gestión del formulario para agregar nuevos libros.
 
-# Mejoras pendientes
+## Mejoras pendientes
 
 Una de las mejoras que no pude completar en esta entrega es la integración de Storybook para la documentación de los componentes. Aunque lo instalé y configuré, solo alcancé a implementar un par de componentes, sin haberlo finalizado completamente antes de la entrega. Me hubiera gustado completar esta tarea, ya que facilitaría la visualización y prueba de los componentes de manera aislada.
 
 Además, sería me gustaría mejorar los estilos y optimizar la responsividad, asegurando que la aplicación se vea y funcione correctamente en una mayor variedad de dispositivos.
 
-# Qué haría diferente si tuviera más tiempo
+## Qué haría diferente si tuviera más tiempo
 
 Si tuviera más tiempo, me enfocaría en:
 

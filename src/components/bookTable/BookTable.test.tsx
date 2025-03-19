@@ -5,6 +5,7 @@ import { Book } from '../../types';
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
+
 const mockBooks: Book[] = [
   {
     url: 'https://anapioficeandfire.com/api/books/1',
@@ -26,12 +27,11 @@ const mockBooks: Book[] = [
   },
 ];
 
-test('renderiza correctamente los datos del libro en la tabla', () => {
+test('debería renderizar correctamente los datos del libro en la tabla', () => {
   render(<BookTable books={mockBooks} />);
 
   expect(screen.getByText('A Game of Thrones')).toBeInTheDocument();
   expect(screen.getByText('A Clash of Kings')).toBeInTheDocument();
-
   expect(screen.getByText('George R.R. Martin')).toBeInTheDocument();
 });
 
@@ -43,6 +43,16 @@ test('filtra los libros por nombre con el filtro global', () => {
   fireEvent.change(searchInput, { target: { value: 'A Game of Thrones' } });
 
   expect(screen.getByText('A Game of Thrones')).toBeInTheDocument();
-
   expect(screen.queryByText('A Clash of Kings')).toBeNull();
+});
+
+test('debería filtrar los libros por columna de nombre', () => {
+  render(<BookTable books={mockBooks} />);
+
+  const nameFilterInput =
+    screen.getAllByPlaceholderText('Filtrar por Nombre')[0];
+  fireEvent.change(nameFilterInput, { target: { value: 'A Clash of Kings' } });
+
+  expect(screen.getByText('A Clash of Kings')).toBeInTheDocument();
+  expect(screen.queryByText('A Game of Thrones')).toBeNull();
 });

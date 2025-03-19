@@ -4,7 +4,7 @@ import { ButtonProps } from '../../types';
 export const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
-  className,
+  className = 'bg-cyan-500 text hover:bg-cyan-600 text-white',
   type,
 }) => {
   return (

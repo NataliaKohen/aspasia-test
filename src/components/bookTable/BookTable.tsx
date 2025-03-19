@@ -8,12 +8,8 @@ import {
 } from '@tanstack/react-table';
 
 import { useState } from 'react';
-import { Book } from '../../types';
+import { Book, BookTableProps } from '../../types';
 import { useNavigate } from 'react-router-dom';
-
-interface BookTableProps {
-  books: Book[];
-}
 
 const columns: ColumnDef<Book>[] = [
   {
@@ -82,7 +78,7 @@ export const BookTable: React.FC<BookTableProps> = ({ books }) => {
         onChange={(e) => setGlobalFilter(e.target.value)}
         className="border border-blue-400 p-2 mb-4 w-full rounded"
       />
-      <table className="min-w-full table-auto  border border-blue-300">
+      <table className="overflow-x-auto w-full border border-blue-300">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id} className="bg-blue-100">
@@ -90,7 +86,7 @@ export const BookTable: React.FC<BookTableProps> = ({ books }) => {
                 <th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()}
-                  className="px-4 py-2 text-left text-sm font-semibold text-blue-900 border-b"
+                  className="px-4 py-2 text-left text-sm font-semibold  text-blue-900 border-b"
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -126,7 +122,7 @@ export const BookTable: React.FC<BookTableProps> = ({ books }) => {
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
-                    className="px-4 py-2 text-sm text-blue-800 border-b"
+                    className=" px-4 py-2 text-sm text-blue-800 border-b"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>

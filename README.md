@@ -93,13 +93,14 @@ Aquí podrás ver los componentes desarrollados, interactuar con ellos, y probar
 
 # Mejoras pendientes
 
-Una de las mejoras que no pude completar en este envío es la integración de Storybook para la documentación de los componentes. Lo instalé y configuré, pero no alcancé a implementarlo completamente antes de la entrega. Me hubiera gustado finalizarlo, ya que facilitaría la visualización y prueba de los componentes.
-Se podría trabajar en mejorar el rendimiento, especialmente si la aplicación maneja una gran cantidad de libros o de datos en general.
+Una de las mejoras que no pude completar en esta entrega es la integración de Storybook para la documentación de los componentes. Aunque lo instalé y configuré, solo alcancé a implementar un par de componentes, sin haberlo finalizado completamente antes de la entrega. Me hubiera gustado completar esta tarea, ya que facilitaría la visualización y prueba de los componentes de manera aislada.
+
+Además, sería me gustaría mejorar los estilos y optimizar la responsividad, asegurando que la aplicación se vea y funcione correctamente en una mayor variedad de dispositivos.
 
 # Qué haría diferente si tuviera más tiempo
 
 Si tuviera más tiempo, me enfocaría en:
 
-- Integrar Storybook para mejorar la visualización y prueba de los componentes de la interfaz.
-- Añadir pruebas más exhaustivas para la lógica del estado y la interacción de los componentes.
-- Optimizar algunos detalles de rendimiento y accesibilidad.
+Integrar Storybook para mejorar la visualización y prueba de los componentes de la interfaz.
+Añadir pruebas más exhaustivas para la lógica del estado y las interacciones entre los componentes.
+Optimizar detalles de rendimiento y accesibilidad, buscando formas de mejorar la eficiencia de la aplicación y su accesibilidad para todos los usuarios.

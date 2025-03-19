@@ -70,7 +70,7 @@ export const BookTable: React.FC<BookTableProps> = ({ books }) => {
   };
 
   return (
-    <div className="mt-20 ">
+    <div className="mt-20">
       <input
         type="text"
         placeholder="Buscar..."

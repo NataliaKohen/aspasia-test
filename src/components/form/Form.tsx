@@ -194,7 +194,7 @@ export const Form = () => {
             </div>
             <Button
               type="submit"
-              className=" px-6 mt-4 rounded-md  transition "
+              className="bg-cyan-500 text hover:bg-cyan-600 text-white font-bold px-6 mt-4 rounded-md  transition "
             >
               {isLoading ? 'Guardando...' : 'Guardar'}
             </Button>

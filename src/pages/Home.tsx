@@ -26,16 +26,21 @@ const Home = () => {
             size={48}
             color="rgb(255, 100, 103)"
           />
-          <span className="mt-4">Los libros se están cargando en la tabla</span>
+          <span className=" mt-4">
+            Los libros se están cargando en la tabla
+          </span>
         </div>
       ) : (
-        <div className="w-full flex flex-col items-center h-full">
-          <h1 className="mt-20 md:text-4xl text-cyan-700 underline">
+        <div className="w-full flex flex-col items-center ">
+          <h1 className="mt-5 sm:mt-10 md:mt-16 lg:mt-20 md:text-4xl text-cyan-700 underline">
             Libros disponibles
           </h1>
-          <div className="flex flex-col items-end xs:px-4 sm:px-10 md:px-20">
+          <div className="flex flex-col items-end sm:px-4 md:px-10 lg:px-20">
             <BookTable books={books} />
-            <Button className="font-bold my-10 w-sm" onClick={handleOpenModal}>
+            <Button
+              className="bg-cyan-500 text hover:bg-cyan-600 text-white font-bold my-10 w-sm"
+              onClick={handleOpenModal}
+            >
               Agregar un libro
             </Button>
           </div>

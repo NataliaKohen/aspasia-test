@@ -19,7 +19,7 @@ Utiliza la API pública "An API of Ice and Fire" para obtener los datos de los l
 - **TypeScript (modo estricto):**: Para obtener una mayor seguridad de tipos y escalabilidad.
 - **Tailwind CSS**: Framework de CSS utilitario para diseñar la interfaz.
 - **React Router**: Para manejar la navegación de las vistas.
-- **Tanstack Table**: Para mostrar, ordenar y filtrar la lista de libros.
+- **Tanstack Table (antes React-table)**: Para mostrar, ordenar y filtrar la lista de libros.
 - **Formik**: Para el manejo y validación de formularios.
 - **Zustand**: Para el manejo del estado de la aplicación.
 - **Jest**: Para realizar pruebas unitarias.
@@ -80,7 +80,7 @@ Aquí podrás ver los componentes desarrollados, interactuar con ellos, y probar
   Utilicé react-icons para incluir íconos para el manejo de favoritos y carga, ya que hace que la aplicación sea más intuitiva.
 
 - Tabla interactiva con TanStack Table
-  La aplicación utiliza TanStack Table (React Table) para mostrar la lista de libros, permitiendo a los usuarios ordenarlos, filtrarlos y buscarlos de manera eficiente.
+  La aplicación utiliza TanStack Table (anteriormente conocido como React-Table) para mostrar la lista de libros, permitiendo a los usuarios ordenarlos, filtrarlos y buscarlos de manera eficiente.
 
 - Navegación con React Router
   Usé React Router para manejar la navegación entre las vistas de la aplicación. Esto permite una estructura clara y facilita la gestión de rutas.
